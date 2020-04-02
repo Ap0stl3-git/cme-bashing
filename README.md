@@ -1,5 +1,4 @@
 # cme-bashing
-
 Bash script to automate common crackmapexec tasks
 
 OPTIONS:
@@ -28,9 +27,11 @@ OPTIONS:
  
  
 (4) Check single creds ID # (ONLY USE DOMAIN ACCOUNTS)
+
   Runs against the SMB Database in cmedb.  Pulls all IP addresses in the database and then attempts to authenticate to each address via smb using the specific account of the creds ID # provided by the user.  When complete, prints a list to screen and to file of all account / host administrative privilege pairs.
 
   The goal of this script is to...
+
     1) Speed up the scans by only attempting to connect to IPs cme has seen active before.
     2) Identify ALL places specified account has administrative privileges, in an automated fashion.
  
@@ -40,6 +41,7 @@ OPTIONS:
   Runs against the SMB Database in cmedb.  Pulls all IP addresses in the database and then attempts to authenticate and run the --lsa flag on each address via smb using ALL accounts in the database. Then filters/sorts the results to display on the screen and write to file all the "clear-text" creds found.  While it is running, you will see the actual results including the non-clear-text.  The cleaned results will be displayed once it completes.
 
   The goal of this script is to...
+
     1) Speed up the scans by only attempting to connect to IPs cme has seen active before.
     2) Run the --lsa flag and clear out all the hashes/noise to present only the "clear-text" creds.
   
@@ -49,6 +51,7 @@ OPTIONS:
   Runs against the SMB Database in cmedb.  Pulls all IP addresses in the database and then attempts to authenticate and run the --lsa flag on each address via smb using ALL accounts in the database. Then filters/sorts the results to display on the screen and write to file all the DCC2 domain cached credential hashes in the format needed to copy/paste into hashcat for cracking.  While it is running, you will see the actual results including the non-dcc2 creds.  The cleaned results will be displayed once it completes.
 
   The goal of this script is to...
+
     1) Speed up the scans by only attempting to connect to IPs cme has seen active before.
     2) Run the --lsa flag and clear out all the non-dcc2/noise to present only the dcc2 hashes in a format for cracking.
   
