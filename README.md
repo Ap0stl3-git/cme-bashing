@@ -8,6 +8,7 @@ OPTIONS:
   Runs against the SMB Database in cmedb.  Pulls all IP addresses in the database and then attempts to authenticate to each address via smb using all domain accounts in the database.  When complete, prints a list to screen and to file of all domain account / host   administrative privilege pairs.
 
   The goal of this script is to...
+  
     1) Speed up the scans by only attempting to connect to IPs cme has seen active before.
     2) Identify ALL places ALL compromised domain accounts have administrative privileges, in an automated fashion.
       
@@ -17,6 +18,7 @@ OPTIONS:
   Runs against the SMB Database in cmedb.  Pulls all IP addresses in the database and then attempts to authenticate to each address via smb using --local-auth accounts in the database.  It does this by pulling all accounts that do not match the "domain" name provided by the user.  When complete, prints a list to screen and to file of all --local-auth account / host   administrative privilege pairs.
 
   The goal of this script is to...
+  
     1) Speed up the scans by only attempting to connect to IPs cme has seen active before.
     2) Identify ALL places ALL compromised --local-auth accounts have administrative privileges, in an automated fashion.
   
