@@ -7,7 +7,7 @@ There are 2 versions of the script.
 
 **2 - cme-bashing-pwn3d.sh** - Used on default CrackMapExec installations where the */root/.cme/cme.conf* file has the *pwn3d_label* value set to *= Pwn3d!*.
 
-CrackMapExec can be obtained from byt3bl33d3r's github here... https://github.com/byt3bl33d3r/CrackMapExec
+CrackMapExec can be obtained from byt3bl33d3r's github here... [//byt3bl33d3r/CrackMapExec](https://github.com/byt3bl33d3r/CrackMapExec)
 
 OPTIONS:
 
