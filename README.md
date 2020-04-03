@@ -3,9 +3,11 @@ Bash script to automate common crackmapexec tasks
 
 There are 2 versions of the script.
 
-**1 - cme-bashing.sh** - Used on crackmapexec installations where the */root/.cme/cme.conf* file has had the *pwn3d_label* value changed to *= Successful_Admin_Access*.
+**1 - cme-bashing.sh** - Used on CrackMapExec installations where the */root/.cme/cme.conf* file has had the *pwn3d_label* value changed to *= Successful_Admin_Access*.
 
-**2 - cme-bashing-pwn3d.sh** - Used on default crackmapexec installations where the */root/.cme/cme.conf* file has the *pwn3d_label* value set to *= Pwn3d!*.  
+**2 - cme-bashing-pwn3d.sh** - Used on default CrackMapExec installations where the */root/.cme/cme.conf* file has the *pwn3d_label* value set to *= Pwn3d!*.
+
+CrackMapExec can be obtained from byt3bl33d3r's github here... https://github.com/byt3bl33d3r/CrackMapExec
 
 OPTIONS:
 
