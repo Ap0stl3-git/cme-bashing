@@ -1,0 +1,7 @@
+cisco
+switch
+firewall
+router
+running-config
+startup-config
+config
