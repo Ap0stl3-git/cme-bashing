@@ -25,7 +25,7 @@ When complete, prints a list of all --local-auth account / host administrative p
   
 # (3) Check all Domain and Local-auth Accounts (ALL)
 
-   Combination of optins (1) & (2).
+   Combination of options (1) & (2).
  
  
 # (4) Check single creds ID # (ONLY USE DOMAIN ACCOUNTS)
