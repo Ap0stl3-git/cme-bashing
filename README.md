@@ -1,5 +1,5 @@
 # cme-bashing
-Bash script to automate common crackmapexec tasks
+Bash script to automate common CrackMapExec tasks
 
 There are 2 versions of the script.
 
