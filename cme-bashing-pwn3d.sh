@@ -29,6 +29,8 @@ rm /tmp/lsa-clear-$tag.txt
 rm /tmp/dcc2-raw-$tag.txt
 rm /tmp/dcc2-$tag.txt
 rm /tmp/cme-filescrape-$tag.txt
+rm /tmp/cme-id-$tag.txt
+rm /tmp/cme-id2-$tag.txt
 
 echo " "
 echo "**** Building IP and Account Lists ****"
@@ -133,11 +135,25 @@ do
 			break
 			;;
 		"Check single creds ID # (ONLY USE DOMAIN ACCOUNTS)")
-			echo " "
+			#check for admin rights on all IPs for single cmedb ID
+            (
+            echo ID# - Username - Password-or-Hash > /tmp/cme-id-$tag.txt
+            for i in $(cat /tmp/cme-domain-accts-$tag.txt )
+            do
+                users1=$(sqlite3 /root/.cme/workspaces/default/smb.db "SELECT id FROM users WHERE id='$i';")
+                users2=$(sqlite3 /root/.cme/workspaces/default/smb.db "SELECT username FROM users WHERE id='$i';")
+                users3=$(sqlite3 /root/.cme/workspaces/default/smb.db "SELECT password FROM users WHERE id='$i';")
+				echo $users1 - $users2 - $users3 >> /tmp/cme-id-$tag.txt
+            done
+            column -t -s' ' /tmp/cme-id-$tag.txt > /tmp/cme-id2-$tag.txt
+            ) > /dev/null
+            echo " "
+            cat /tmp/cme-id2-$tag.txt
+            echo " "
+			read -p "Enter creds ID # from list above: " id
+            echo " "
 			echo =========== Beginning Checks Now =================
 			echo " "
-			#check for admin rights on all IPs for single cmedb ID
-			read -p "Enter creds ID # from the cmedb: " id
 			cme -t 30 smb /tmp/cme-ip-$tag.txt -id $id  | tee -a /tmp/cme-creds-check-$tag.txt
             echo " "
             echo ==========================================================
