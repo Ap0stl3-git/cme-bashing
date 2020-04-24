@@ -77,7 +77,7 @@ Searches through the cme log files from the --lsa flag, pulls out all the dcc2 h
   
 ### (9) Spider file contents for DA account IDs in provided txt file
 
-Runs the cme --spider option searching the "contents" of files for the names of accounts in the "Domain Admins" group.  Server and file share are provided by the user.  Path to a text file containin a list of domain admin accounts is also provided by the user.
+Runs the cme --spider option searching the "contents" of files for the names of accounts in the "Domain Admins" group.  Server and file share are provided by the user.  Path to a text file containing a list of domain admin accounts is also provided by the user.
 
 
 ### (10) Spider filenames for common network configs
