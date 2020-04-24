@@ -1,5 +1,12 @@
 #!/bin/bash
 
+echo '                               __               __    _             '
+echo '    _________ ___  ___        / /_  ____ ______/ /_  (_)___  ____ _ '
+echo '   / ___/ __ `__ \/ _ \______/ __ \/ __ `/ ___/ __ \/ / __ \/ __ `/ '
+echo '  / /__/ / / / / /  __/_____/ /_/ / /_/ (__  ) / / / / / / / /_/ /  '
+echo '  \___/_/ /_/ /_/\___/     /_.___/\__,_/____/_/ /_/_/_/ /_/\__, /   '
+echo '                                                          /____/    '
+
 echo " "
 echo "All tests will be run against all IP addresses of systems within the cmedb."
 echo "Tests will check for Admin Priv access and display results at the end."
